@@ -97,6 +97,8 @@ model.compile(
     metrics=['accuracy'])
 
 callback = missinglink.KerasCallback(owner_id=args.owner_id, project_token=args.project_token, host=args.host)
+print('missinglink.KerasCallback vvv', missinglink.KerasCallback.vvv)
+
 callback.set_properties(display_name='KerasMinstTest', description='cool kerassing around')
 
 model.fit(
