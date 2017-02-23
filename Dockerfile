@@ -1,6 +1,6 @@
 FROM missinglinkai/frameworks:latest
 
-RUN python -m pip install missinglink-sdk
+RUN python -m pip install -i https://testpypi.python.org/pypi missinglink-sdk
 
 ADD keras_mnist.py keras_mnist.py
 ADD keras_mnist_load_data.py keras_mnist_load_data.py
