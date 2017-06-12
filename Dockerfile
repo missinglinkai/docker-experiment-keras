@@ -5,7 +5,7 @@ ADD keras_mnist_load_data.py keras_mnist_load_data.py
 
 RUN python keras_mnist_load_data.py
 
-RUN python -m pip install -i https://testpypi.python.org/pypi missinglink-sdk
+RUN python -m pip install missinglink-sdk -U
 
 ENV PROJECT_TOKEN=HnHgRzkuOpVNTqMK
 ENV OWNER_ID=ffff-cf7d-6501-e583-8c13a14eca0d
