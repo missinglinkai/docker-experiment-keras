@@ -32,11 +32,12 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--owner-id', required=True)
 parser.add_argument('--project-token', required=True)
 parser.add_argument('--epochs', type=int, default=8)
+parser.add_argument('--batch-size', type=int, default=128)
 parser.add_argument('--host')
 
 args = parser.parse_args()
 
-batch_size = 128
+batch_size = args.batch_size
 nb_classes = 10
 
 # input image dimensions
