@@ -6,14 +6,15 @@ Gets to 99.25% test accuracy after 12 epochs
 16 seconds per epoch on a GRID K520 GPU.
 '''
 from __future__ import print_function
+import logging
+logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger('missinglink').addHandler(logging.StreamHandler())
+
 import numpy as np
-
 import missinglink
-
 np.random.seed(1337)  # for reproducibility
 import argparse
 import os
-
 import pwd
 
 from keras.datasets import mnist
