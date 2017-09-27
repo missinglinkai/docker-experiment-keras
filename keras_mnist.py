@@ -121,7 +121,8 @@ model.fit(
     X_train, Y_train, batch_size=batch_size, nb_epoch=args.epochs, validation_split=0.2,
     callbacks=[callback])
 
-score = model.evaluate(X_test, Y_test, verbose=0)
+with callback.test(model):
+    score = model.evaluate(X_test, Y_test, verbose=0)
 
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
