@@ -30,6 +30,7 @@ from random import randint
 def get_username():
     return pwd.getpwuid(os.getuid())[0]
 
+
 parser = argparse.ArgumentParser(description='Process some integers.')
 
 parser.add_argument('--owner-id', required=True)
@@ -55,6 +56,8 @@ kernel_size = (3, 3)
 
 # the data, shuffled and split between train and test sets
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+print('args.is_sampling: ', args.is_sampling, ' type: ', type(args.is_sampling))
 
 if args.is_sampling:
     random_sampling_factor = randint(0, 50)
