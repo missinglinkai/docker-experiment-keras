@@ -12,10 +12,12 @@ ENV OWNER_ID=ffff-cf7d-6501-e583-8c13a14eca0d
 ENV HOST=https://missinglink-staging.appspot.com
 ENV EPOCHS=10
 ENV BATCH_SIZE=128
+ENV IS_SAMPLING=False
 
 CMD python keras_mnist.py \
     --owner-id $OWNER_ID \
     --project-token $PROJECT_TOKEN \
     --epochs $EPOCHS \
     --batch-size $BATCH_SIZE \
-    --host $HOST
+    --host $HOST \
+    --host $IS_SAMPLING
