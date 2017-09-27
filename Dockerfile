@@ -20,4 +20,4 @@ CMD python keras_mnist.py \
     --epochs $EPOCHS \
     --batch-size $BATCH_SIZE \
     --host $HOST \
-    --host $IS_SAMPLING
+    --is-sampling $IS_SAMPLING
