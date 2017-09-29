@@ -1,6 +1,6 @@
 FROM missinglinkai/frameworks:latest
 
-ADD requirements.txt
+ADD requirements.txt requirements.txt
 ADD keras_mnist.py keras_mnist.py
 ADD keras_mnist_load_data.py keras_mnist_load_data.py
 
