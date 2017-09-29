@@ -22,13 +22,24 @@ from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
+from keras.callbacks import Callback
 from keras.utils import np_utils
 from keras import backend as K
 from random import randint
 
+class TestCallback(Callback):
+    def __init__(self, test_data, callback):
+        self.test_data = test_data
+        self.callback = callback
 
-def get_username():
-    return pwd.getpwuid(os.getuid())[0]
+    def on_epoch_end(self, epoch, logs={}):
+        if not epoch % 10:
+            return
+
+        X_test, Y_test = self.test_data
+        with callback.test(model):
+            score = model.evaluate(X_test, Y_test, verbose=0)
+
 
 
 parser = argparse.ArgumentParser(description='Process some integers.')
@@ -125,7 +136,7 @@ callback.set_hyperparams(total_epochs=args.epochs)
 
 model.fit(
     X_train, Y_train, batch_size=batch_size, nb_epoch=args.epochs, validation_split=0.2,
-    callbacks=[callback])
+    callbacks=[callback, TestCallback((X_test, Y_test), callback)])
 
 with callback.test(model):
     score = model.evaluate(X_test, Y_test, verbose=0)
