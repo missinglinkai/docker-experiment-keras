@@ -120,6 +120,8 @@ callback.set_properties(display_name='KerasMinstTest', description='cool kerassi
 if args.is_sampling:
     callback.set_hyperparams(sampling_factor=random_sampling_factor)
 
+callback.set_hyperparams(total_epochs=args.epochs)
+
 model.fit(
     X_train, Y_train, batch_size=batch_size, nb_epoch=args.epochs, validation_split=0.2,
     callbacks=[callback])
