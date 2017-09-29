@@ -60,8 +60,7 @@ kernel_size = (3, 3)
 print('args.is_sampling: ', args.is_sampling, ' type: ', type(args.is_sampling))
 
 if args.is_sampling:
-    random_sampling_factor = randint(0, 50)
-    random_sampling_factor = random_sampling_factor / float(100)
+    random_sampling_factor = randint(0, 100) / float(100)
 
     rows_to_delete = range(int(random_sampling_factor * X_train.shape[0]))
 
@@ -118,8 +117,10 @@ callback = missinglink.KerasCallback(owner_id=args.owner_id, project_token=args.
 callback.set_properties(display_name='KerasMinstTest', description='cool kerassing around')
 
 if args.is_sampling:
-    callback.set_hyperparams(sampling_factor=random_sampling_factor)
+    callback.set_hyperparams(sampling_factor=1 - random_sampling_factor) # we log how many samples in % we have from the total samples
 
+callback.set_hyperparams(train_sample_count=X_train.shape[0])
+callback.set_hyperparams(test_sample_count=X_test.shape[0])
 callback.set_hyperparams(total_epochs=args.epochs)
 
 model.fit(
