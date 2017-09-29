@@ -33,9 +33,6 @@ class TestCallback(Callback):
         self.callback = callback
 
     def on_epoch_end(self, epoch, logs={}):
-        if not epoch % 10:
-            return
-
         X_test, Y_test = self.test_data
         with self.callback.test(self.model):
             score = model.evaluate(X_test, Y_test, verbose=0)
