@@ -37,7 +37,7 @@ class TestCallback(Callback):
             return
 
         X_test, Y_test = self.test_data
-        with callback.test(model):
+        with self.callback.test(self.model):
             score = model.evaluate(X_test, Y_test, verbose=0)
 
 
