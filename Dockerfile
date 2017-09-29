@@ -6,7 +6,7 @@ ADD keras_mnist_load_data.py keras_mnist_load_data.py
 
 RUN python keras_mnist_load_data.py
 
-RUN python -m pip install -r requirements.txt -U
+RUN python -m pip install -r requirements.txt
 
 ENV PROJECT_TOKEN=HnHgRzkuOpVNTqMK
 ENV OWNER_ID=ffff-cf7d-6501-e583-8c13a14eca0d
