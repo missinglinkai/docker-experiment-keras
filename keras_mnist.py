@@ -7,16 +7,15 @@ Gets to 99.25% test accuracy after 12 epochs
 '''
 from __future__ import print_function
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger('missinglink').addHandler(logging.StreamHandler())
 
 import numpy as np
 import missinglink
+
 np.random.seed(1337)  # for reproducibility
 import argparse
-import os
-import pwd
-
 
 from keras.datasets import mnist
 from keras.models import Sequential
@@ -27,16 +26,30 @@ from keras.utils import np_utils
 from keras import backend as K
 from random import randint
 
+from custom_metrics import precision, recall, f1
+
+
 class TestCallback(Callback):
     def __init__(self, test_data, callback):
-        self.test_data = test_data
         self.callback = callback
+        self.precision_metrics = []
+        self.recall_metrics = []
+        self.x_test, self.y_test = test_data
 
-    def on_epoch_end(self, epoch, logs={}):
-        X_test, Y_test = self.test_data
+    def on_epoch_end(self, batch, logs=None):
         with self.callback.test(self.model):
-            score = model.evaluate(X_test, Y_test, verbose=0)
+            score = self.model.evaluate(self.x_test, self.y_test, verbose=0)
+            precision_index = self.model.metrics_names.index('precision')
+            recall_index = self.model.metrics_names.index('recall')
+            self.precision_metrics.append(score[precision_index])
+            self.recall_metrics.append(score[recall_index])
 
+    def on_train_end(self, epoch, logs=None):
+        x = self.callback.calculate_weights_hash(self.model)
+        self.callback.send_chart(name='Precision Recall',
+                                 x_values=self.precision_metrics, y_values=self.recall_metrics,
+                                 x_legend='Precision', y_legends='Recall',
+                                 scope='test', type='line', model_weights_hash=x)
 
 
 parser = argparse.ArgumentParser(description='Process some integers.')
@@ -118,14 +131,15 @@ model.add(Activation('softmax'))
 model.compile(
     loss='categorical_crossentropy',
     optimizer='adadelta',
-    metrics=['accuracy', 'categorical_accuracy', 'mean_squared_error', 'hinge', 'precision', 'fbeta_score'])
+    metrics=['accuracy', 'categorical_accuracy', 'mean_squared_error', 'hinge', precision, recall, f1])
 
 callback = missinglink.KerasCallback(owner_id=args.owner_id, project_token=args.project_token, host=args.host)
 
 callback.set_properties(display_name='KerasMinstTest', description='cool kerassing around')
 
 if args.is_sampling:
-    callback.set_hyperparams(sampling_factor=1 - random_sampling_factor) # we log how many samples in % we have from the total samples
+    callback.set_hyperparams(
+        sampling_factor=1 - random_sampling_factor)  # we log how many samples in % we have from the total samples
 
 callback.set_hyperparams(train_sample_count=X_train.shape[0])
 callback.set_hyperparams(test_sample_count=X_test.shape[0])
@@ -135,8 +149,10 @@ model.fit(
     X_train, Y_train, batch_size=batch_size, nb_epoch=args.epochs, validation_split=0.2,
     callbacks=[callback, TestCallback((X_test, Y_test), callback)])
 
-with callback.test(model):
-    score = model.evaluate(X_test, Y_test, verbose=0)
 
-print('Test score:', score[0])
-print('Test accuracy:', score[1])
+
+# with callback.test(model):
+#   score = model.evaluate(X_test, Y_test, verbose=0)
+#
+# print('Test score:', score[0])
+# print('Test accuracy:', score[1])
