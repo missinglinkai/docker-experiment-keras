@@ -4,7 +4,7 @@ ADD requirements.txt requirements.txt
 ADD keras_mnist.py keras_mnist.py
 ADD custom_metrics.py custom_metrics.py
 ADD keras_mnist_load_data.py keras_mnist_load_data.py
-
+ADD .git .git
 RUN python keras_mnist_load_data.py
 
 RUN python -m pip install -r requirements.txt
