@@ -1,5 +1,6 @@
-FROM missinglinkai/frameworks:latest
+FROM gw000/keras:1.2.2-cpu
 
+workdir /experiment
 ADD requirements.txt requirements.txt
 ADD keras_mnist.py keras_mnist.py
 ADD custom_metrics.py custom_metrics.py
