@@ -7,7 +7,7 @@ ADD custom_metrics.py custom_metrics.py
 ADD keras_mnist_load_data.py keras_mnist_load_data.py
 ADD .git .git
 RUN python keras_mnist_load_data.py
-
+RUN sed -i s,'https://github.com/missinglinkai/docker-experiment-keras.git','git@github.com:missinglinkai/docker-experiment-keras.git',g  .git/config
 RUN python -m pip install -r requirements.txt
 
 ENV PROJECT_TOKEN=HnHgRzkuOpVNTqMK
