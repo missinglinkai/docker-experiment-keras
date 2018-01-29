@@ -6,7 +6,9 @@ Gets to 99.25% test accuracy after 12 epochs
 16 seconds per epoch on a GRID K520 GPU.
 '''
 from __future__ import print_function
+
 import logging
+
 logging.getLogger().setLevel(logging.DEBUG)
 logging.getLogger('missinglink').addHandler(logging.StreamHandler())
 
@@ -14,15 +16,12 @@ import numpy as np
 import missinglink
 np.random.seed(1337)  # for reproducibility
 import argparse
-import os
-import pwd
-
 
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
-from keras.callbacks import Callback
+from keras.callbacks import Callback, ModelCheckpoint
 from keras.utils import np_utils
 from keras import backend as K
 from random import randint
@@ -131,9 +130,18 @@ callback.set_hyperparams(train_sample_count=X_train.shape[0])
 callback.set_hyperparams(test_sample_count=X_test.shape[0])
 callback.set_hyperparams(total_epochs=args.epochs)
 
+
+checkpont_callback = ModelCheckpoint(filepath='/output/weights.{epoch:02d}-{val_loss:.2f}.hdf5',
+                                     monitor='val_loss',
+                                     verbose=1,
+                                     save_best_only=False,
+                                     save_weights_only=False,
+                                     mode='auto',
+                                     period=1)
+
 model.fit(
     X_train, Y_train, batch_size=batch_size, nb_epoch=args.epochs, validation_split=0.2,
-    callbacks=[callback, TestCallback((X_test, Y_test), callback)])
+    callbacks=[checkpont_callback, callback, TestCallback((X_test, Y_test), callback)])
 
 with callback.test(model):
     score = model.evaluate(X_test, Y_test, verbose=0)
