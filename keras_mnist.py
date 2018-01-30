@@ -117,7 +117,7 @@ model.add(Activation('softmax'))
 model.compile(
     loss='categorical_crossentropy',
     optimizer='adadelta',
-    metrics=['accuracy', 'categorical_accuracy', 'mean_squared_error', 'hinge', 'precision', 'fbeta_score'])
+    metrics=['accuracy', 'categorical_accuracy', 'mean_squared_error', 'hinge', 'fbeta_score'])
 
 callback = missinglink.KerasCallback(owner_id=args.owner_id, project_token=args.project_token, host=args.host)
 
