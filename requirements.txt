@@ -1,3 +1,1 @@
-keras
-tensorflow-gpu
 missinglink-sdk
