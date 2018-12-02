@@ -54,8 +54,8 @@ class TestCallback(Callback):
 
 parser = argparse.ArgumentParser(description='Process some integers.')
 
-parser.add_argument('--owner-id', required=True)
-parser.add_argument('--project-token', required=True)
+parser.add_argument('--owner-id', required=False, default=None)
+parser.add_argument('--project-token', required=False, default=None)
 parser.add_argument('--epochs', type=int, default=8)
 parser.add_argument('--batch-size', type=int, default=128)
 parser.add_argument('--is-sampling', type=bool, default=False)

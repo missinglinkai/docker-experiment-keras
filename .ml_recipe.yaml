@@ -1,0 +1,8 @@
+command:
+- python keras_mnist.py --is-sampling True
+git_repo: git@github.com:missinglinkai/docker-experiment-keras.git
+gpu: true
+image: missinglinkai/tensorflow:latest-gpu-py3
+org: missinglinkdemo
+project: 5633418423435264
+queue: mnist
