@@ -56,14 +56,16 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 
 parser.add_argument('--owner-id', required=False, default=None)
 parser.add_argument('--project-token', required=False, default=None)
-parser.add_argument('--epochs', type=int, default=8)
-parser.add_argument('--batch-size', type=int, default=128)
-parser.add_argument('--is-sampling', type=bool, default=False)
+parser.add_argument('--epochs', type=int, default=None)
+parser.add_argument('--batch-size', type=int, default=None)
+parser.add_argument('--is-sampling', type=bool, default=True)
 parser.add_argument('--host')
 
 args = parser.parse_args()
 
-batch_size = args.batch_size
+batch_size = random.choice([16, 32, 64, 128, 256])
+epochs =random.choice(list(xrange(5,200,5)))
+
 nb_classes = 10
 
 # input image dimensions
@@ -141,18 +143,19 @@ if args.is_sampling:
     callback.set_hyperparams(
         sampling_factor=1 - random_sampling_factor)  # we log how many samples in % we have from the total samples
 
+
 callback.set_hyperparams(train_sample_count=X_train.shape[0])
 callback.set_hyperparams(test_sample_count=X_test.shape[0])
-callback.set_hyperparams(total_epochs=args.epochs)
+callback.set_hyperparams(total_epochs=epochs)
 
 model.fit(
-    X_train, Y_train, batch_size=batch_size, nb_epoch=args.epochs, validation_split=0.2,
+    X_train, Y_train, batch_size=batch_size, nb_epoch=epochs, validation_split=0.2,
     callbacks=[callback, TestCallback((X_test, Y_test), callback)])
 
 
 
-# with callback.test(model):
-#   score = model.evaluate(X_test, Y_test, verbose=0)
-#
-# print('Test score:', score[0])
-# print('Test accuracy:', score[1])
+with callback.test(model):
+   score = model.evaluate(X_test, Y_test, verbose=0)
+
+print('Test score:', score[0])
+print('Test accuracy:', score[1])
