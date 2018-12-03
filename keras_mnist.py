@@ -64,7 +64,7 @@ parser.add_argument('--host')
 args = parser.parse_args()
 
 batch_size = random.choice([16, 32, 64, 128, 256, 512])
-epochs =random.choice(list(range(5,200,5)))
+epochs =random.choice(list(range(30,1005,5)))
 
 nb_classes = 10
 
