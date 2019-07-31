@@ -137,7 +137,7 @@ model.compile(
 
 callback = missinglink.KerasCallback(owner_id=args.owner_id, project_token=args.project_token, host=args.host)
 
-callback.set_properties(display_name='KerasMinstTest', description='cool kerassing around')
+callback.set_properties(display_name='KerasMnistTest', description='cool kerassing around')
 
 if args.is_sampling:
     callback.set_hyperparams(
